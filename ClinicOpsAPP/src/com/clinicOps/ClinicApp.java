@@ -1,9 +1,10 @@
 package com.clinicOps;
 
-import java.util.Scanner;
 import com.clinicOps.menu.AdminMenu;
 import com.clinicOps.menu.FrontDeskMenu;
 import com.clinicOps.util.ScannerHelper;
+
+import java.util.Scanner;
 
 public class ClinicApp {
 
@@ -20,16 +21,17 @@ public class ClinicApp {
 
         while (!exitSystem) {
 
+
             System.out.println("\n--- MAIN MENU ---");
             System.out.println("Select Persona:");
             System.out.println("1. Admin");
             System.out.println("2. Front Desk Executive");
             System.out.println("3. Exit");
-            System.out.print("Enter choice: ");
 
-            int roleChoice = ScannerHelper.readIntegerInput(scanner);
+            int roleChoice = ScannerHelper.readIntWithPrompt(scanner, "Enter choice: ");
 
             switch (roleChoice) {
+
                 case ROLE_ADMIN:
                     AdminMenu.show(scanner);
                     break;
