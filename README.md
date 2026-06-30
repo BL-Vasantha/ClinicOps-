@@ -1,41 +1,58 @@
                                                             # 🏥 ClinicOps
 
-## 📌 Project Introduction
-ClinicOps is a console-based application developed for **TownClinic** to replace paper-based clinic operations with a simple digital system.
+# 🏥 ClinicOps
 
-This application provides a menu-based interface for different user roles and allows users to navigate clinic operations through the console.
-
----
-
-## 🎯 Features (UC1 – Console Based Menu)
-
-### 👨‍💼 Admin
-- Doctors' Entry *(placeholder)*
-- Bulk Data Entry *(placeholder)*
-- View Audit Logs *(placeholder)*
-- Logout
-
-### 👩‍💻 Front Desk Executive
-- Patient Registration *(placeholder)*
-- Book Appointment *(placeholder)*
-- Logout
-
-### ⚙️ System
-- Welcome screen
-- Role-based menu selection
-- Input validation
-- Exit application option
+## 📌 Project Overview
+ClinicOps is a console-based Java application developed to simplify day-to-day clinic management operations.  
+The system helps move from paper-based processes to a structured digital workflow.
 
 ---
 
-## 🏗️ Project Structure
+## 👨‍⚕️ Use Case 2: Doctor Management
+
+Admin can:
+
+✔ Register details of up to 3 doctors  
+✔ View all saved doctor records  
+✔ Import doctor details using CSV file
+
+---
+
+## ✨ Features
+
+### 🔐 Admin Operations
+- Doctors' Entry
+- Bulk Import using CSV
+- View Audit Logs *(Upcoming)*
+- Display Registered Doctors
+- Logout
+
+---
+
+## 🩺 Doctor Information
+
+Each doctor contains:
+
+- Doctor Name *(mandatory)*
+- Specialization *(mandatory)*
+- Years of Experience *(numeric value)*
+- Availability Shift
+    - Morning
+    - Evening
+    - Both
+
+---
+
+## 🏗 Project Structure
 
 ```plaintext
-ClinicOps/
+com.clinicOps
+
+├── ClinicApp.java
 │
-├── src/
-│   ├── menu/
-│   └── util/
+├── menu
+│   ├── AdminMenu.java
+│   └── FrontDeskMenu.java
 │
-├── README.md
-└── .gitignore
+└── util
+    └── ScannerHelper.java
