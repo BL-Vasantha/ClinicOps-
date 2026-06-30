@@ -1,38 +1,16 @@
 package com.clinicOps.menu;
 
+import com.clinicOps.model.Doctor;
 import com.clinicOps.util.ScannerHelper;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class AdminMenu {
 
-    private static final int DOCTOR_ENTRY = 1;
-    private static final int BULK_ENTRY = 2;
-    private static final int VIEW_AUDIT = 3;
-    private static final int DISPLAY_DOCTORS = 4;
-    private static final int LOGOUT = 5;
-
-    // Manual Doctors
-    private static String doc1Name="", doc1Spec="", doc1Shift="";
-    private static int doc1Exp=0;
-
-    private static String doc2Name="", doc2Spec="", doc2Shift="";
-    private static int doc2Exp=0;
-
-    private static String doc3Name="", doc3Spec="", doc3Shift="";
-    private static int doc3Exp=0;
-
-    // CSV Doctors
-    private static String csvDoc1Name="", csvDoc1Spec="", csvDoc1Shift="";
-    private static int csvDoc1Exp=0;
-
-    private static String csvDoc2Name="", csvDoc2Spec="", csvDoc2Shift="";
-    private static int csvDoc2Exp=0;
-
-    private static String csvDoc3Name="", csvDoc3Spec="", csvDoc3Shift="";
-    private static int csvDoc3Exp=0;
+    private static final List<Doctor> doctorList = new ArrayList<>();
+    private static int idCounter = 1;
 
     public static void show(Scanner scanner) {
 
@@ -40,275 +18,101 @@ public class AdminMenu {
 
         while (!logout) {
 
-            displayAdminOptions();
+            System.out.println("\n--- ADMIN MENU ---");
+            System.out.println("1. Register Doctor");
+            System.out.println("2. Display Doctors");
+            System.out.println("3. Logout");
+            System.out.print("Enter choice: ");
 
-            int choice =
-                    ScannerHelper.readIntWithPrompt(
-                            scanner,
-                            "Enter choice: "
-                    );
+            int choice = ScannerHelper.readInt(scanner);
 
             switch (choice) {
 
-                case DOCTOR_ENTRY:
-                    registerDoctors(scanner);
+                case 1:
+                    registerDoctor(scanner);
                     break;
 
-                case BULK_ENTRY:
-                    importDoctorsFromCSV();
-                    break;
-
-                case VIEW_AUDIT:
-                    System.out.println(
-                            "[Audit log logic will be implemented]"
-                    );
-                    break;
-
-                case DISPLAY_DOCTORS:
+                case 2:
                     displayDoctors();
                     break;
 
-                case LOGOUT:
+                case 3:
                     logout = true;
-                    System.out.println(
-                            "Logging out Admin..."
-                    );
+                    System.out.println("Logging out...");
                     break;
 
                 default:
-                    System.out.println(
-                            "Invalid choice!"
-                    );
-
+                    System.out.println("Invalid choice!");
             }
-
         }
-
     }
 
-    private static void displayAdminOptions() {
+    private static void registerDoctor(Scanner scanner) {
 
-        System.out.println("\n--- CLINIC ADMIN MENU ---");
+        System.out.println("\n--- Registering New Doctor ---");
 
-        System.out.println("1. Doctors' Entry");
-        System.out.println("2. Bulk Entry (CSV)");
-        System.out.println("3. View Audit Logs");
-        System.out.println("4. Display All Doctors");
-        System.out.println("5. Logout");
+        String id = String.format("D%04d", idCounter++);
 
-    }
-
-    private static void registerDoctors(
-            Scanner scanner
-    ) {
-
-        System.out.println("\n--- Enter Doctor Details ---");
-
-        System.out.println("\nDoctor 1");
-
-        doc1Name =
-                ScannerHelper.readStringWithPrompt(
+        String name =
+                ScannerHelper.readString(
                         scanner,
                         "Name: "
                 );
 
-        doc1Spec =
-                ScannerHelper.readStringWithPrompt(
+        String specialization =
+                ScannerHelper.readString(
                         scanner,
                         "Specialization: "
                 );
 
-        doc1Exp =
-                ScannerHelper.readIntWithPrompt(
+        int experience =
+                ScannerHelper.readInt(
                         scanner,
                         "Experience: "
                 );
 
-        doc1Shift =
-                ScannerHelper.readStringWithPrompt(
+        String shift =
+                ScannerHelper.readString(
                         scanner,
                         "Shift: "
                 );
 
-        System.out.println("\nDoctor 2");
-
-        doc2Name =
-                ScannerHelper.readStringWithPrompt(
-                        scanner,
-                        "Name: "
+        Doctor doctor =
+                new Doctor(
+                        id,
+                        name,
+                        specialization,
+                        experience,
+                        shift
                 );
 
-        doc2Spec =
-                ScannerHelper.readStringWithPrompt(
-                        scanner,
-                        "Specialization: "
-                );
-
-        doc2Exp =
-                ScannerHelper.readIntWithPrompt(
-                        scanner,
-                        "Experience: "
-                );
-
-        doc2Shift =
-                ScannerHelper.readStringWithPrompt(
-                        scanner,
-                        "Shift: "
-                );
-
-        System.out.println("\nDoctor 3");
-
-        doc3Name =
-                ScannerHelper.readStringWithPrompt(
-                        scanner,
-                        "Name: "
-                );
-
-        doc3Spec =
-                ScannerHelper.readStringWithPrompt(
-                        scanner,
-                        "Specialization: "
-                );
-
-        doc3Exp =
-                ScannerHelper.readIntWithPrompt(
-                        scanner,
-                        "Experience: "
-                );
-
-        doc3Shift =
-                ScannerHelper.readStringWithPrompt(
-                        scanner,
-                        "Shift: "
-                );
+        doctorList.add(doctor);
 
         System.out.println(
-                "\nDoctors registered successfully!"
+                "Doctor registered successfully with ID: "
+                        + id
         );
-
-    }
-
-    private static void importDoctorsFromCSV() {
-
-        try {
-
-            BufferedReader reader =
-                    new BufferedReader(
-                            new FileReader(
-                                    "ClinicOpsApp/doctors.csv"
-                            )
-                    );
-
-            String line;
-
-            int count = 0;
-
-            while ((line = reader.readLine()) != null) {
-
-                line =
-                        line.trim();
-
-                if (
-                        line.isEmpty()
-                ) {
-                    continue;
-                }
-
-                String[] doctor =
-                        line.split(",");
-
-                if (
-                        doctor.length != 4
-                ) {
-                    continue;
-                }
-
-                count++;
-
-                if (count == 1) {
-
-                    csvDoc1Name = doctor[0].trim();
-                    csvDoc1Spec = doctor[1].trim();
-                    csvDoc1Exp =
-                            Integer.parseInt(
-                                    doctor[2].trim()
-                            );
-                    csvDoc1Shift =
-                            doctor[3].trim();
-
-                }
-
-                else if (count == 2) {
-
-                    csvDoc2Name = doctor[0].trim();
-                    csvDoc2Spec = doctor[1].trim();
-                    csvDoc2Exp =
-                            Integer.parseInt(
-                                    doctor[2].trim()
-                            );
-                    csvDoc2Shift =
-                            doctor[3].trim();
-
-                }
-
-                else if (count == 3) {
-
-                    csvDoc3Name = doctor[0].trim();
-                    csvDoc3Spec = doctor[1].trim();
-                    csvDoc3Exp =
-                            Integer.parseInt(
-                                    doctor[2].trim()
-                            );
-                    csvDoc3Shift =
-                            doctor[3].trim();
-
-                }
-
-            }
-
-            reader.close();
-
-            System.out.println(
-                    "\nDoctors imported successfully from CSV!"
-            );
-
-        }
-
-        catch (Exception e) {
-
-            System.out.println(
-                    "CSV import failed: "
-                            + e.getMessage()
-            );
-
-        }
-
     }
 
     private static void displayDoctors() {
 
-        System.out.println(
-                "\n--- REGISTERED DOCTORS ---"
-        );
+        System.out.println("\n--- Doctor List ---");
 
-        if (!doc1Name.isEmpty())
-            System.out.println("ID:D001 | " + doc1Name + " | " + doc1Spec + " | " + doc1Exp + " | " + doc1Shift);
+        if (doctorList.isEmpty()) {
 
-        if (!doc2Name.isEmpty())
-            System.out.println("ID:D002 | " + doc2Name + " | " + doc2Spec + " | " + doc2Exp + " | " + doc2Shift);
+            System.out.println(
+                    "No doctors available."
+            );
 
-        if (!doc3Name.isEmpty())
-            System.out.println("ID:D003 | " + doc3Name + " | " + doc3Spec + " | " + doc3Exp + " | " + doc3Shift);
+            return;
+        }
 
-        if (!csvDoc1Name.isEmpty())
-            System.out.println("CSV-D001 | " + csvDoc1Name + " | " + csvDoc1Spec + " | " + csvDoc1Exp + " | " + csvDoc1Shift);
+        for (Doctor doctor : doctorList) {
 
-        if (!csvDoc2Name.isEmpty())
-            System.out.println("CSV-D002 | " + csvDoc2Name + " | " + csvDoc2Spec + " | " + csvDoc2Exp + " | " + csvDoc2Shift);
+            System.out.println(
+                    doctor
+            );
 
-        if (!csvDoc3Name.isEmpty())
-            System.out.println("CSV-D003 | " + csvDoc3Name + " | " + csvDoc3Spec + " | " + csvDoc3Exp + " | " + csvDoc3Shift);
-
+        }
     }
-
 }

@@ -4,35 +4,22 @@ import java.util.Scanner;
 
 public class ScannerHelper {
 
-    private ScannerHelper() {}
-
-    // Integer input with validation
-    public static int readIntWithPrompt(Scanner scanner, String prompt) {
-        while (true) {
-            try {
-                System.out.print(prompt);
-                int value = scanner.nextInt();
-                scanner.nextLine(); // clear buffer
-                return value;
-            } catch (Exception e) {
-                scanner.nextLine();
-                System.out.println(">> Error: Please enter a valid number.");
-            }
+    public static int readInt(Scanner scanner) {
+        while (!scanner.hasNextInt()) {
+            System.out.print("Invalid input! Enter number: ");
+            scanner.next();
         }
+        return scanner.nextInt();
     }
 
-    // Non-empty string input
-    public static String readStringWithPrompt(Scanner scanner, String prompt) {
-        while (true) {
-            System.out.print(prompt);
-            String input = scanner.nextLine().trim();
+    public static int readInt(Scanner scanner, String prompt) {
+        System.out.print(prompt);
+        return readInt(scanner);
+    }
 
-            if (!input.isEmpty()) {
-                return input;
-            }
-
-            System.out.println(">> Error: Input cannot be empty.");
-        }
-
+    public static String readString(Scanner scanner, String prompt) {
+        System.out.print(prompt);
+        scanner.nextLine(); // clear buffer
+        return scanner.nextLine();
     }
 }

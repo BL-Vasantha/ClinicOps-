@@ -21,7 +21,7 @@ public class FrontDeskMenu {
             System.out.println("2. Book Appointment");
             System.out.println("3. Logout");
 
-            int choice = ScannerHelper.readIntWithPrompt(scanner, "Enter choice: ");
+            int choice = ScannerHelper.readInt(scanner, "Enter choice: ");
 
             switch (choice) {
 
@@ -41,7 +41,6 @@ public class FrontDeskMenu {
                 default:
                     System.out.println("Invalid choice! Try again.");
             }
-
         }
     }
 }
