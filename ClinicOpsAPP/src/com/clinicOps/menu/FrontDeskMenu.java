@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class FrontDeskMenu {
 
-    private static final int PATIENT_REGISTRATION = 1;
+    private static final int REGISTER_PATIENT = 1;
     private static final int BOOK_APPOINTMENT = 2;
     private static final int LOGOUT = 3;
 
@@ -20,17 +20,17 @@ public class FrontDeskMenu {
             System.out.println("1. Register New Patient");
             System.out.println("2. Book Appointment");
             System.out.println("3. Logout");
-            System.out.print("Enter choice: ");
 
-            int choice = ScannerHelper.readIntegerInput(scanner);
+            int choice = ScannerHelper.readIntWithPrompt(scanner, "Enter choice: ");
 
             switch (choice) {
-                case PATIENT_REGISTRATION:
-                    System.out.println("[Logic for Patient Registration will be implemented]");
+
+                case REGISTER_PATIENT:
+                    System.out.println("[Patient registration logic coming soon]");
                     break;
 
                 case BOOK_APPOINTMENT:
-                    System.out.println("[Logic for Appointment Booking will be implemented]");
+                    System.out.println("[Appointment booking logic coming soon]");
                     break;
 
                 case LOGOUT:
@@ -39,8 +39,9 @@ public class FrontDeskMenu {
                     break;
 
                 default:
-                    System.out.println("Invalid choice! Please try again.");
+                    System.out.println("Invalid choice! Try again.");
             }
+
         }
     }
 }
