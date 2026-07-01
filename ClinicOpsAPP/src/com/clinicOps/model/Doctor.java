@@ -1,7 +1,9 @@
 package com.clinicOps.model;
 
-public class Doctor {
+import com.clinicOps.model.Shift;
+import com.clinicOps.model.Specialization;
 
+public class Doctor {
     private String id;
     private String name;
     private Specialization specialization;
@@ -18,9 +20,6 @@ public class Doctor {
 
     @Override
     public String toString() {
-        return String.format(
-                "ID: %-5s | Name: %-15s | Specialization: %-20s | Exp: %2d yrs | Shift: %s",
-                id, name, specialization, experience, shift
-        );
+        return id + " | " + name + " | " + specialization + " | " + experience + " | " + shift;
     }
 }

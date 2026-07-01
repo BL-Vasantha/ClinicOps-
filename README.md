@@ -1,33 +1,42 @@
-# ClinicOps - UC4: Enum-Based Validation
+# ClinicOps - UC5: Bulk Doctor Upload
 
 ## Overview
 
-UC4 improves input reliability and maintains consistent data by restricting user entries to predefined values using enums.
-
-## Problem in UC3
-
-* Allowed manual text input for doctor details
-* Increased chance of invalid values and typos
-* Reduced data consistency
-
-## Solution
-
-* Introduced **Enum** for `Shift` and `Specialization`
-* Implemented a **generic method** for enum selection
-* Added validation to prevent unsupported inputs
+UC5 enables bulk registration of doctors through a CSV file, reducing manual data entry and improving efficiency.
 
 ## Features
 
-* Register doctors with validated selections
-* Menu-based fixed value input
-* Improved data consistency and cleaner output
+* Upload multiple doctor records from a CSV file
+* Automatically generate doctor IDs
+* Validate **Specialization** and **Shift** using enums
+* Store uploaded records using **ArrayList**
+* Process bulk insertion in a single flow
+
+## CSV Format
+
+```plaintext
+Name,Specialization,Experience,Shift
+```
+
+### Example
+
+```plaintext
+ vasantha ,GENERAL_PHYSICIAN,5,MORNING
+```
 
 ## Concepts Used
 
-* Enums
-* Generics
-* Input Validation
-* Object-Oriented Programming (OOP)
+* File I/O (`BufferedReader`)
+* `String.split()`
+* Enum Validation
+* Try-with-resources
+* Batch Processing (`addAll`)
+* Collection Framework (`ArrayList`)
+
+## Limitations
+
+* Depends on correct CSV structure
+* Duplicate record validation not implemented
 
 ## Project Structure
 
@@ -35,8 +44,8 @@ UC4 improves input reliability and maintains consistent data by restricting user
 ClinicOps/
 │
 ├── menu/
-│   └── DoctorMenu.java
-│      → Handles user interaction and menu operations
+│   └── AdminMenu.java
+│      → Handles admin operations and bulk upload menu
 │
 ├── model/
 │   ├── Doctor.java
@@ -45,17 +54,17 @@ ClinicOps/
 │      → Contains entity classes and enums
 │
 ├── util/
-│   └── ScannerHelp.java
-│      → Handles scanner operations and input support
+│   ├── ScannerHelp.java
+│   └── FileHandler.java
+│      → Handles input support and CSV file processing
 │
 └── ClinicApp.java
-   → Main entry point of the application
+   → Main application entry point
 ```
 
 ## Git Branch
 
-feature/UC4-enum-based-selection
-
+feature/UC5-bulk-data-entry
 
 Author
 Ragimekalapalli Vasantha

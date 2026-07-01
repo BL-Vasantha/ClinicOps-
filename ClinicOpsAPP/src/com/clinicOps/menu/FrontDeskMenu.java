@@ -2,45 +2,42 @@ package com.clinicOps.menu;
 
 import com.clinicOps.util.ScannerHelper;
 
-import java.util.Scanner;
-
 public class FrontDeskMenu {
 
-    private static final int REGISTER_PATIENT = 1;
+    private static final int PATIENT_REGISTRATION = 1;
     private static final int BOOK_APPOINTMENT = 2;
     private static final int LOGOUT = 3;
 
-    public static void show(Scanner scanner) {
+    private FrontDeskMenu() {
+    }
 
+    public static void showMenu() {
         boolean logout = false;
-
         while (!logout) {
-
-            System.out.println("\n--- FRONT DESK EXECUTIVE MENU ---");
-            System.out.println("1. Register New Patient");
-            System.out.println("2. Book Appointment");
-            System.out.println("3. Logout");
-
-            int choice = ScannerHelper.readInt(scanner, "Enter choice: ");
-
+            displayFrontDeskOptions();
+            int choice = ScannerHelper.readInteger("\nEnter your choice: ");
             switch (choice) {
-
-                case REGISTER_PATIENT:
-                    System.out.println("[Patient registration logic coming soon]");
+                case PATIENT_REGISTRATION:
+                    System.out.println("\n[Placeholder] Patient Registration functionality will be implemented in future UC.");
                     break;
-
                 case BOOK_APPOINTMENT:
-                    System.out.println("[Appointment booking logic coming soon]");
+                    System.out.println("\n[Placeholder] Appointment Booking functionality will be implemented in future UC.");
                     break;
-
                 case LOGOUT:
+                    System.out.println("\nLogging out from Front Desk Executive...");
                     logout = true;
-                    System.out.println("Logging out Front Desk Executive...");
                     break;
-
                 default:
-                    System.out.println("Invalid choice! Try again.");
+                    System.out.println("\nInvalid option. Please enter between 1 and 3.");
             }
         }
+    }
+
+    private static void displayFrontDeskOptions() {
+        System.out.println("----- FRONT DESK EXECUTIVE MENU -----");
+
+        System.out.println("1. Patient Registration");
+        System.out.println("2. Book Appointment");
+        System.out.println("3. Logout");
     }
 }
