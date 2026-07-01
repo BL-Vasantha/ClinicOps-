@@ -7,6 +7,7 @@ public class FrontDeskMenu {
     private static final int PATIENT_REGISTRATION = 1;
     private static final int BOOK_APPOINTMENT = 2;
     private static final int LOGOUT = 3;
+    
 
     private FrontDeskMenu() {
     }

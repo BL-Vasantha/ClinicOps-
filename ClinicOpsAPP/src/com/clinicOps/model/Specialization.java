@@ -7,5 +7,4 @@ public enum Specialization {
     CARDIOLOGIST,
     CHILD_SPECIALIST,
     GYNAECOLOGIST
-
 }
