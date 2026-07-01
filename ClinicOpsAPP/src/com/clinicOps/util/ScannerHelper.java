@@ -9,6 +9,7 @@ public class ScannerHelper {
     private ScannerHelper() {
     }
 
+
     public static String readString(String prompt) {
         while (true) {
             System.out.print(prompt);
