@@ -46,4 +46,15 @@ public class ScannerHelper {
             System.out.println("Invalid Choice.");
         }
     }
+
+    public static String readMobileNumber(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String mobile = SCANNER.nextLine().trim();
+            if (mobile.matches("^[6-9]\\d{9}$")) {
+                return mobile;
+            }
+            System.out.println("Invalid Indian Mobile Number.");
+        }
+    }
 }
