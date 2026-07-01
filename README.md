@@ -1,4 +1,4 @@
-# ClinicOps - UC5: Bulk Doctor Upload
+# ClinicOps - UC5: Bulk Doctor Data
 
 ## Overview
 
