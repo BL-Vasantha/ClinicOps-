@@ -1,62 +1,61 @@
-                                                    ClinicOps
+# ClinicOps - UC4: Enum-Based Validation
 
-     Use Case 3: Refactored Doctor Management
+## Overview
 
-          Overview
-This use case improves the doctor management module by applying Object-Oriented Programming principles and reducing repetitive code to make the application more scalable and maintainable.
+UC4 improves input reliability and maintains consistent data by restricting user entries to predefined values using enums.
 
----
-       Limitations in Previous Version
-- Fixed doctor capacity
-- Duplicate code implementation
-- Difficult to maintain and extend
-- No structured data management
+## Problem in UC3
 
----
+* Allowed manual text input for doctor details
+* Increased chance of invalid values and typos
+* Reduced data consistency
 
-      Improvements in UC3
-- Introduced **Doctor Model Class** for encapsulation
-- Implemented **ArrayList** for dynamic doctor storage
-- Added **Auto-generated Doctor IDs** (D0001, D0002...)
-- Improved code readability and modularity
+## Solution
 
----
+* Introduced **Enum** for `Shift` and `Specialization`
+* Implemented a **generic method** for enum selection
+* Added validation to prevent unsupported inputs
 
-     Features
-- Register Doctor
-- Display Registered Doctors
-- Dynamic Doctor Data Handling
-- Auto-generated Unique IDs
+## Features
 
----
+* Register doctors with validated selections
+* Menu-based fixed value input
+* Improved data consistency and cleaner output
 
-      Concepts Used
-- OOP (Encapsulation)
-- Constructor
-- ArrayList
-- String Formatting
-- Static Memory Persistence
+## Concepts Used
 
----
+* Enums
+* Generics
+* Input Validation
+* Object-Oriented Programming (OOP)
 
-             Project Structure
+## Project Structure
 
---------------------------------------------------
-com.clinicOps
+```plaintext
+ClinicOps/
 │
-├── ClinicApp.java
+├── menu/
+│   └── DoctorMenu.java
+│      → Handles user interaction and menu operations
 │
-├── model
-│   └── Doctor.java
+├── model/
+│   ├── Doctor.java
+│   ├── Shift.java
+│   └── Specialization.java
+│      → Contains entity classes and enums
 │
-├── util
-│   └── ScannerHelper.java
+├── util/
+│   └── ScannerHelp.java
+│      → Handles scanner operations and input support
 │
-└── menu
-    ├── AdminMenu.java
-    └── FrontDeskMenu.java
+└── ClinicApp.java
+   → Main entry point of the application
+```
+
+## Git Branch
+
+feature/UC4-enum-based-selection
 
 
----------------------
 Author
 Ragimekalapalli Vasantha
