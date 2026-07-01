@@ -4,11 +4,11 @@ public class Doctor {
 
     private String id;
     private String name;
-    private String specialization;
+    private Specialization specialization;
     private int experience;
-    private String shift;
+    private Shift shift;
 
-    public Doctor(String id, String name, String specialization, int experience, String shift) {
+    public Doctor(String id, String name, Specialization specialization, int experience, Shift shift) {
         this.id = id;
         this.name = name;
         this.specialization = specialization;
@@ -19,7 +19,7 @@ public class Doctor {
     @Override
     public String toString() {
         return String.format(
-                "ID: %-5s | Name: %-15s | Specialization: %-12s | Exp: %2d yrs | Shift: %s",
+                "ID: %-5s | Name: %-15s | Specialization: %-20s | Exp: %2d yrs | Shift: %s",
                 id, name, specialization, experience, shift
         );
     }
