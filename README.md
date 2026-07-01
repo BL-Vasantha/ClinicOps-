@@ -1,51 +1,142 @@
-# ClinicOps - UC5: Bulk Doctor Data
+# ClinicOps - UC6: Bulk Doctor Data Entry using OpenCSV (Optional)
 
-## Overview
+## 🎯 Goal
 
-UC5 enables bulk registration of doctors through a CSV file, reducing manual data entry and improving efficiency.
+Enable bulk upload of doctor details from a `.csv` file using the OpenCSV library with validation, duplicate checking, and controlled error handling.
 
-## Features
+## 🚀 Objective
 
-* Upload multiple doctor records from a CSV file
-* Automatically generate doctor IDs
-* Validate **Specialization** and **Shift** using enums
-* Store uploaded records using **ArrayList**
-* Process bulk insertion in a single flow
+UC6 enhances the doctor upload process by:
 
-## CSV Format
+* Supporting bulk upload through CSV files
+* Allowing partial success by skipping invalid records
+* Preventing duplicate doctor entries
+* Providing detailed validation feedback
+* Improving file processing using OpenCSV
 
-```plaintext
+## 👤 Actor
+
+**Admin**
+
+## 🔄 Flow
+
+1. Admin selects **Bulk Data Entry** from Admin Menu
+2. System asks for CSV file path
+3. CSV file is processed using **OpenCSV** (`CSVReader`)
+4. Each row is validated and checked for duplicates
+5. Valid records are uploaded
+6. Invalid records are skipped with messages
+
+## ⚙️ Key Functionalities
+
+### 1.  CSV File Processing
+
+* Reads doctor details using OpenCSV
+* Processes records line by line
+
+Expected format:
+
+```plaintext id="b9u8ax"
 Name,Specialization,Experience,Shift
 ```
 
-### Example
+---
 
-```plaintext
- vasantha ,GENERAL_PHYSICIAN,5,MORNING
+### 2.   Validation Handling
+
+Validation is performed for:
+
+* Specialization
+* Shift
+* Record structure
+* Experience format
+
+If validation fails:
+
+``
+Invalid Specialization/Shift : <record>
 ```
 
-## Concepts Used
+Processing continues for remaining records.
 
-* File I/O (`BufferedReader`)
-* `String.split()`
-* Enum Validation
-* Try-with-resources
-* Batch Processing (`addAll`)
-* Collection Framework (`ArrayList`)
+---
 
-## Limitations
+### 3. 🔁 Duplicate Record Handling
 
-* Depends on correct CSV structure
-* Duplicate record validation not implemented
+Duplicate detection is performed using:
+
+* Doctor Name
+* Specialization
+* Experience
+
+If duplicate exists:
+
+```plaintext id="az8fy5"
+Duplicate Doctor Skipped : <name>
+```
+
+---
+
+### 4. 🆔 Unique ID Generation
+
+Every valid doctor receives a generated ID.
+
+Example:
+
+
+D0001
+D0002
+D0003
+```
+
+---
+
+### 5.  Error Handling
+
+Invalid records do not stop processing.
+
+Handled scenarios:
+
+* Incorrect column count
+* Invalid specialization
+* Invalid shift
+* Invalid experience values
+* Duplicate entries
+
+## ✅ Advantages over UC5
+
+| Feature                 | UC5            | UC6                |
+| ----------------------- | -------------- | ------------------ |
+| CSV Processing          | Manual Parsing | OpenCSV            |
+| Invalid Record Handling | Stops Process  | Skips Invalid Rows |
+| Duplicate Check         | Not Supported  | Implemented        |
+| Error Feedback          | Basic          | Detailed           |
+
+## 📌 Example CSV
+
+```plaintext id="gq1srf"
+Name,Specialization,Experience,Shift
+
+Vasantha,CARDIOLOGY,5,MORNING
+Manju,NEUROLOGY,8,EVENING
+Anita,ORTHOPEDICS,3,AFTERNOON
+Manu,DERMATOLOGY,6,MORNING
+HARI,GENERAL_PHYSICIAN,10,EVENING
+-------------------
+
+## 📦 Dependencies
+
+* OpenCSV Library
+
 
 ## Project Structure
 
-```plaintext
+```plaintext id="vhs8x6"
 ClinicOps/
 │
 ├── menu/
 │   └── AdminMenu.java
-│      → Handles admin operations and bulk upload menu
+│      → Handles admin menu operations
 │
 ├── model/
 │   ├── Doctor.java
@@ -56,7 +147,7 @@ ClinicOps/
 ├── util/
 │   ├── ScannerHelp.java
 │   └── FileHandler.java
-│      → Handles input support and CSV file processing
+│      → Handles input and CSV processing
 │
 └── ClinicApp.java
    → Main application entry point
@@ -64,7 +155,14 @@ ClinicOps/
 
 ## Git Branch
 
-feature/UC5-bulk-data-entry
+
+feature/UC6-opencsv-integration
+```
+
+## 🏁 Conclusion
+
+UC6 improves bulk doctor upload by introducing OpenCSV-based processing, validation, duplicate prevention, and fault-tolerant execution to ensure successful handling of valid records.
+
 
 Author
 Ragimekalapalli Vasantha
