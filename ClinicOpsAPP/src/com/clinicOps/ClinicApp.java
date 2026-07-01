@@ -1,11 +1,11 @@
 package com.clinicOps;
 
+
 import com.clinicOps.menu.AdminMenu;
 import com.clinicOps.menu.FrontDeskMenu;
 import com.clinicOps.util.ScannerHelper;
 
 public class ClinicApp {
-
 
     private static final int ROLE_ADMIN = 1;
     private static final int ROLE_FRONT_DESK = 2;

@@ -8,6 +8,7 @@ public class Doctor {
     private int experience;
     private Shift shift;
 
+
     public Doctor(String id,
                   String name,
                   Specialization specialization,
