@@ -1,25 +1,23 @@
-# 📘 ClinicOps – UC9: Appointment Booking
+# 📘 ClinicOps – UC10: Appointment Booking by Specialization
 
 ## Overview
 
-Use Case 9 introduces an appointment booking system that allows the Front Desk Executive to schedule appointments for registered patients. The system checks doctor availability, displays available appointment slots, books the selected slot, and generates the appointment details while preventing duplicate slot bookings.
+Use Case 10 enhances the appointment booking process by assigning patients to doctors based on the required specialization. The system filters doctors using the selected specialization, checks slot availability, and books the appointment with the first eligible doctor.
 
 ---
 
 ## 🎯 Goal
 
-Book an appointment for a registered patient with an available doctor based on slot availability.
+Book an appointment for a patient with a doctor based on specialization and slot availability.
 
 ---
 
 ## 🚀 Objective
 
-* Book appointments automatically.
-* Assign an available doctor.
-* Display available appointment slots.
-* Prevent double booking.
-* Maintain doctor schedules.
-* Generate appointment details after successful booking.
+* Book appointments with the appropriate specialist.
+* Filter doctors using specialization.
+* Check slot availability before booking.
+* Improve appointment accuracy and efficiency.
 
 ---
 
@@ -31,67 +29,56 @@ Book an appointment for a registered patient with an available doctor based on s
 
 ## 📌 Assumptions
 
-* Doctor specialization is not considered during appointment booking.
-* All doctors are assumed to be available for both shifts.
-* Appointments are booked sequentially.
-* Each doctor has **16 slots** per day.
-* Morning Shift: **9:00 AM – 12:30 PM** (8 slots).
-* Evening Shift: **4:00 PM – 7:30 PM** (8 slots).
-* Once booked, a slot cannot be booked again.
+* Specialization is mandatory for booking.
+* All doctors are available for both shifts.
+* Each doctor has **16 appointment slots** per day.
+* Morning Shift: **9:00 AM – 12:30 PM**.
+* Evening Shift: **4:00 PM – 7:30 PM**.
+* Once a slot is booked, it cannot be reused.
 
 ---
 
 ## 🔄 Flow
 
-1. Front Desk Executive selects **Book Appointment**.
-2. System asks for the patient's mobile number.
-3. Patient details are verified.
-4. System displays all available appointment slots.
-5. User selects a preferred slot.
-6. System finds an available doctor.
-7. Appointment is booked successfully.
-8. Appointment details are displayed.
+1. Select **Book Appointment**.
+2. Enter the patient's mobile number.
+3. Select the required specialization.
+4. System filters doctors by specialization.
+5. Checks for an available slot.
+6. Books the appointment.
+7. Displays appointment details.
 
 ---
 
 ## ⚙️ Key Functionalities
 
-* Patient Verification
-* Appointment Slot Selection
-* Doctor Availability Check
-* Automatic Doctor Assignment
-* Appointment Creation
-* Slot Booking Management
-* Display Appointment Details
+* Specialization-based doctor selection.
+* Doctor filtering using **Stream API**.
+* Slot availability check.
+* Appointment creation.
+* Prevention of duplicate slot booking.
 
 ---
 
 ## 🏗️ System Changes
 
+### FrontDeskMenu.java
+
+* Added specialization selection.
+* Updated appointment booking flow.
+
+### Doctor.java
+
+* Supports specialization-based filtering.
+* Maintains booked appointment slots.
+
 ### Appointment.java
 
 Stores:
 
-* Patient information
-* Doctor information
-* Appointment slot
-
-### Doctor.java
-
-Enhanced with:
-
-* Booked slot list
-* Slot availability checking
-* Slot booking functionality
-
-### FrontDeskMenu.java
-
-Added:
-
-* Appointment booking
-* Patient lookup
-* Slot selection
-* Appointment confirmation
+* Patient
+* Doctor
+* Appointment Slot
 
 ---
 
@@ -122,110 +109,69 @@ ClinicOps
 
 ## 📌 Sample Output
 
-### Doctor Registration
-
-
-Doctors Registered Successfully.
-```
-
-### Patient Registration
-
-
-Register Patient
-
-Mobile Number : 9959777375
-Patient Name  : Vasantha
-Gender        : Female
-Age           : 00
-
-Patient Registered Successfully.
-```
-
-### Appointment Booking
+### Successful Booking
 
 
 Enter Patient Mobile Number : 9959777375
 
-Available Appointment Slots
+Select Specialization
+1. CARDIOLOGY
+2. DERMATOLOGY
+3. ORTHOPEDICS
+4. PEDIATRICS
+5. GENERAL_PHYSICIAN
+6. NEUROLOGY
 
-1. 09:00 AM
-2. 09:30 AM
-3. 10:00 AM
-4. 10:30 AM
-5. 11:00 AM
-6. 11:30 AM
-7. 12:00 PM
-8. 12:30 PM
-9. 04:00 PM
-10. 04:30 PM
-11. 05:00 PM
-12. 05:30 PM
-13. 06:00 PM
-14. 06:30 PM
-15. 07:00 PM
-16. 07:30 PM
-
-Select Slot : 15
+Enter Choice : 1
 
 Appointment Booked Successfully.
 
-=========== Appointment ===========
-
-Patient ID      : P0001
-Patient Name    : Vasantha
-Doctor ID       : D0002
-Doctor Name     : 2
-Appointment Slot: 07:00 PM
-
-===================================
+Doctor : Dr. Vasantha
+Specialization : CARDIOLOGY
+Appointment Slot : 09:30 AM
 ```
 
-### View Patients
+### No Matching Doctor
 
 
-========== Patient List ==========
+No doctors available for the selected specialization.
+```
 
-Patient ID : P0001
-Name       : Vasantha
-Gender     : Female
-Age        : 00
-Mobile No  : 9959777375
+### No Available Slots
 
-----------------------------------
+
+No slots available.
+
+Please try again later.
 ```
 
 ---
 
 ## 📚 Concepts Covered
 
-* Object Composition
+* Stream API (`filter()`, `findFirst()`)
+* Enum Comparison
+* Functional Programming
 * Encapsulation
-* Linear Search
-* Collection Handling
 * Appointment Scheduling
 * Slot Management
-* Doctor Availability
-* Inter-Class Communication
 
 ---
 
-## 🆚 Improvement Over UC8
+## 🆚 Improvement Over UC9
 
-| Feature                     | UC8 | UC9 |
-| --------------------------- | --- | --- |
-| Patient Registration        | ✅   | ✅   |
-| Existing Patient Validation | ✅   | ✅   |
-| Appointment Booking         | ❌   | ✅   |
-| Slot Selection              | ❌   | ✅   |
-| Doctor Assignment           | ❌   | ✅   |
-| Slot Availability Check     | ❌   | ✅   |
-| Appointment Details         | ❌   | ✅   |
+| Feature               | UC9                  | UC10                |
+| --------------------- | -------------------- | ------------------- |
+| Appointment Booking   | ✅                    | ✅                   |
+| Specialization Filter | ❌                    | ✅                   |
+| Doctor Selection      | Any Available Doctor | Matching Specialist |
+| Stream API            | ❌                    | ✅                   |
 
 ---
 
 ## 🏁 Conclusion
 
-UC9 extends the ClinicOps application by introducing an appointment booking module. It enables the Front Desk Executive to schedule appointments for registered patients by checking doctor availability and assigning appointment slots. This implementation ensures efficient scheduling, prevents duplicate bookings, and establishes a strong foundation for future enhancements such as doctor specialization, appointment rescheduling, and online appointment management.
+UC10 improves appointment booking by matching patients with doctors based on specialization while ensuring slot availability. This provides more accurate scheduling and creates a strong foundation for future enhancements such as specialist availability tracking, priority appointments, and online booking.
 
 Author
 Ragimekalapalli Vasantha
