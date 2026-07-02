@@ -19,6 +19,10 @@ public class AdminMenu {
     private AdminMenu() {
     }
 
+    public static List<Doctor> getDoctorList() {
+        return doctorList;
+    }
+
     public static void showMenu() {
         boolean logout = false;
         while (!logout) {

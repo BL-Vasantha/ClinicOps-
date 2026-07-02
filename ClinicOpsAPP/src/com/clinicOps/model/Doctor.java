@@ -1,6 +1,7 @@
 package com.clinicOps.model;
 
-import com.clinicOps.model.Shift;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Doctor {
 
@@ -9,6 +10,7 @@ public class Doctor {
     private Specialization specialization;
     private int experience;
     private Shift shift;
+    private List<String> bookedSlots = new ArrayList<>();
 
     public Doctor(String id,
                   String name,
@@ -43,12 +45,26 @@ public class Doctor {
         return shift;
     }
 
+    public List<String> getBookedSlots() {
+        return bookedSlots;
+    }
+
+    public boolean isSlotAvailable(String slot) {
+        return !bookedSlots.contains(slot);
+    }
+
+    public void bookSlot(String slot) {
+        bookedSlots.add(slot);
+    }
+
     @Override
     public String toString() {
+
         return "Doctor ID      : " + id +
                 "\nName          : " + name +
                 "\nSpecialization: " + specialization +
                 "\nExperience    : " + experience + " Years" +
-                "\nShift         : " + shift;
+                "\nShift         : " + shift +
+                "\nBooked Slots  : " + bookedSlots;
     }
 }
