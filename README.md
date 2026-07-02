@@ -1,208 +1,157 @@
- feature/UC5-bulk-data-entry
-# ClinicOps - UC5: Bulk Data Entry for Doctors
+# 📘 ClinicOps – Check Duplicate Patient by Mobile Number
 
-# ClinicOps - UC7: Register Patient Data
- develop
+## Overview
+
+Use Case 8 improves the patient registration process by checking whether a patient is already registered using their mobile number. This helps avoid duplicate records and makes registration faster for returning patients.
+
+---
 
 ## 🎯 Goal
 
-Enable the Front Desk Executive to register and manage patient information with validation and automatic ID generation.
+Prevent duplicate patient registration using the patient's mobile number.
+
+---
 
 ## 🚀 Objective
 
-UC7 introduces patient management by:
+* Avoid duplicate patient records.
+* Improve registration efficiency.
+* Reduce unnecessary data entry.
+* Use the mobile number as a unique identifier.
 
-* Registering patient details
-* Validating Indian mobile numbers
-* Generating unique patient IDs
-* Providing an option to view registered patients
+---
 
 ## 👤 Actor
 
 **Front Desk Executive**
 
+---
+
 ## 🔄 Flow
 
-1. Front Desk Executive selects **Register Patient**
-2. Enters patient details:
+1. Front Desk Executive selects **Patient Registration**.
+2. System asks for the patient's mobile number.
+3. The mobile number is validated.
+4. If the mobile number already exists:
 
-    * Name
-    * Gender
-    * Age
-    * Mobile Number
-3. System validates the mobile number
-4. System generates a unique Patient ID
-5. Patient data is stored successfully
-6. User can select **View Patients** to display all registered patients
+    * Display the patient's details.
+    * Show a welcome message.
+    * Stop the registration process.
+5. If the mobile number does not exist:
+
+    * Collect Name, Gender, and Age.
+    * Register the patient successfully.
+
+---
 
 ## ⚙️ Key Functionalities
 
-### 1. 🧾 Patient Registration
+* Mobile Number Validation
+* Existing Patient Lookup using Linear Search
+* Duplicate Registration Prevention
+* Conditional Registration Flow
+* Display Existing Patient Details
+* Register New Patient Only
 
-Required fields:
+---
 
+## 🏗️ Folder Structure
 
-Name
-Gender
-Age
-Mobile Number
-```
-
-Patient information is captured through user input and stored in the system.
-
-### 2. 🆔 Unique Patient ID Generation
-
-Each patient receives an automatically generated ID.
-
-**Format:**
-
-
-P0001
-P0002
-P0003
-```
-
-This ensures unique identification for every patient.
-
-### 3. 📱 Indian Mobile Number Validation
-
-Mobile numbers are validated using Regex.
-
-**Pattern:**
-
-```plaintext
-^[6-9][0-9]{9}$
-```
-
-**Rules:**
-
-* Must contain exactly 10 digits
-* Must start with 6, 7, 8, or 9
-
-If invalid:
-
-```plaintext
-Invalid Mobile Number. Please enter a valid Indian number.
-```
-
-### 4. 👁️ View Registered Patients
-
-The system provides an option to display all registered patients.
-
-Displayed details:
-
-
-Patient ID
-Name
-Gender
-Age
-Mobile Number
-```
-
-
-### Patient Model
-
-Created a new `Patient.java` class to store patient information.
-
-**Attributes:**
-
-* patientId
-* name
-* gender
-* age
-* mobileNumber
-
-### Front Desk Menu
-
-Updated `FrontDeskMenu.java` to:
-
-* Register patient data
-* Validate mobile numbers
-* Generate patient IDs
-* View registered patients
-
-### Scanner Utility
-
-Updated `ScannerHelp.java` to:
-
-* Read user input
-* Validate mobile numbers using Regex
-* Re-prompt for invalid entries
-
-## 📌 Example
-
-### Input
-
-
-Name: m
-Gender: female
-Age: 23
-Mobile: 9876543210
-```
-
-### Output
-
-```plaintext
-Patient Registered Successfully!
-Patient ID: P0001
-```
-
-## 🧪 Invalid Input Example
-
-### Input
-
-
-Mobile: 12345
-```
-
-### Output
-
-
-Invalid Mobile Number. Please enter a valid Indian number.
-```
-
-## 📚 Concepts Used
-
-* Object-Oriented Programming (OOP)
-* Unique ID Generation
-* Regex Validation
-* Input Handling
-* Menu-Driven Programming
-
-## Project Structure
-
-
-ClinicOps/
+```text
+ClinicOps
 │
-├── menu/
-│   └── FrontDeskMenu.java
-│      → Handles patient registration and viewing
-│
-├── model/
-│   ├── Patient.java
+├── model
 │   ├── Doctor.java
+│   ├── Patient.java
 │   ├── Shift.java
 │   └── Specialization.java
-│      → Contains patient, doctor, and enum models
 │
-├── util/
-│   └── ScannerHelp.java
-│      → Handles input and mobile validation
+├── util
+│   ├── FileHandler.java
+│   └── ScannerHelper.java
+│
+├── menu
+│   ├── AdminMenu.java
+│   └── FrontDeskMenu.java
 │
 └── ClinicApp.java
-   → Main application entry point
 ```
 
-## Git Branch
+---
 
+## 📌 Sample Output
 
-feature/UC7-patient-registration
+### New Patient Registration
+
+```text
+Register Patient
+
+Mobile Number : 9959777376
+Patient Name  : Vasantha
+Gender        : Female
+Age           : 00
+
+Patient Registered Successfully.
 ```
+
+---
+
+### Existing Patient
+
+```text
+Register Patient
+
+Mobile Number : 9959777375
+
+Patient already registered!
+
+Welcome back Vasantha
+```
+
+---
+
+### Invalid Mobile Number
+
+```text
+Register Patient
+
+Mobile Number : vasantha
+
+Invalid Indian Mobile Number.
+
+Mobile Number :
+```
+
+---
+
+## 📚 Concepts Covered
+
+* Linear Search
+* Encapsulation
+* Getter Methods
+* Input Validation
+* Conditional Workflow
+* Duplicate Data Prevention
+* Null Handling
+
+---
+
+## 🆚 Improvement Over UC7
+
+| Feature                  | UC7        | UC8          |
+| ------------------------ | ---------- | ------------ |
+| Duplicate Patient Check  | ❌ No       | ✅ Yes        |
+| Mobile Number Validation | ❌ No       | ✅ Yes        |
+| Existing Patient Lookup  | ❌ No       | ✅ Yes        |
+| Duplicate Prevention     | ❌ No       | ✅ Yes        |
+| Registration Flow        | Name First | Mobile First |
+| User Experience          | Basic      | Improved     |
+
+---
 
 ## 🏁 Conclusion
 
-UC7 introduces a structured patient registration module with mobile number validation, unique ID generation, and patient viewing functionality. This improves data accuracy and lays the foundation for future features such as appointments, billing, and medical records.
-
+UC8 strengthens the patient registration module by validating the mobile number before registration and checking whether the patient already exists. This prevents duplicate records, improves data consistency, and provides a smoother registration experience for both new and returning patients.
 
 Author
 Ragimekalapalli Vasantha
