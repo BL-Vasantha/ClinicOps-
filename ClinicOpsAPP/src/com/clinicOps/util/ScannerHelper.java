@@ -3,6 +3,7 @@ package com.clinicOps.util;
 import java.util.Scanner;
 
 public class ScannerHelper {
+    
 
     private static final Scanner SCANNER = new Scanner(System.in);
 

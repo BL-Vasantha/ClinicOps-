@@ -1,5 +1,7 @@
 package com.clinicOps.model;
 
+import com.clinicOps.model.Shift;
+
 public class Doctor {
 
     private String id;
@@ -7,7 +9,6 @@ public class Doctor {
     private Specialization specialization;
     private int experience;
     private Shift shift;
-
 
     public Doctor(String id,
                   String name,

@@ -1,6 +1,5 @@
 package com.clinicOps.model;
 
-
 public enum Specialization {
 
     CARDIOLOGY,
@@ -9,4 +8,5 @@ public enum Specialization {
     PEDIATRICS,
     GENERAL_PHYSICIAN,
     NEUROLOGY
+
 }
