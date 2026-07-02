@@ -6,4 +6,5 @@ public enum Shift {
 
     EVENING,
     BOTH
+
 }

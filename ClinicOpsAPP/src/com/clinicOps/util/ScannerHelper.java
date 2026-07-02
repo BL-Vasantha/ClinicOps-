@@ -51,6 +51,7 @@ public class ScannerHelper {
         }
     }
 
+
     public static <T extends Enum<T>> T readEnumChoice(
             String prompt,
             T[] values) {

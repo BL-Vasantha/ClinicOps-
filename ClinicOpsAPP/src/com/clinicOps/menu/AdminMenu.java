@@ -1,7 +1,5 @@
 package com.clinicOps.menu;
 
-
-
 import com.clinicOps.model.Doctor;
 import com.clinicOps.model.Shift;
 import com.clinicOps.model.Specialization;

@@ -1,4 +1,4 @@
-package com.clinicOps.model;
+package com.clinicops.model;
 
 public class Patient {
 
@@ -7,7 +7,6 @@ public class Patient {
     private String gender;
     private int age;
     private String mobileNumber;
-
 
     public Patient(String patientId,
                    String name,
