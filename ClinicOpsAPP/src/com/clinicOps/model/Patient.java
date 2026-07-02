@@ -44,7 +44,6 @@ public class Patient {
     @Override
     public String toString() {
 
-
         return "Patient ID    : " + patientId +
                 "\nName         : " + name +
                 "\nGender       : " + gender +
