@@ -124,7 +124,7 @@ ClinicOps
 
 ### Doctor Registration
 
-```text
+
 Doctors Registered Successfully.
 ```
 
