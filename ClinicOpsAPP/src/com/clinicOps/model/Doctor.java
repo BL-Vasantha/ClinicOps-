@@ -6,7 +6,6 @@ import java.util.List;
 public class Doctor {
 
     private String id;
-
     private String name;
     private Specialization specialization;
     private int experience;
@@ -56,6 +55,29 @@ public class Doctor {
 
     public void bookSlot(String slot) {
         bookedSlots.add(slot);
+    }
+
+    public boolean isShiftCompatible(String slot) {
+        boolean isMorningSlot =
+                slot.startsWith("09")
+                        || slot.startsWith("10")
+                        || slot.startsWith("11")
+                        || slot.startsWith("12");
+        boolean isEveningSlot =
+                slot.startsWith("04")
+                        || slot.startsWith("05")
+                        || slot.startsWith("06")
+                        || slot.startsWith("07");
+        switch (shift) {
+            case MORNING:
+                return isMorningSlot;
+            case EVENING:
+                return isEveningSlot;
+            case BOTH:
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override

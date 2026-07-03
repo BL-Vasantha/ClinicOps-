@@ -9,6 +9,7 @@ import com.clinicOps.util.ScannerHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class AdminMenu {
 
     private static final ArrayList<Doctor> doctorList = new ArrayList<>();
