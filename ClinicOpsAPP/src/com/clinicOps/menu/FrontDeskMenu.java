@@ -62,7 +62,7 @@ public class FrontDeskMenu {
             System.out.println("=================================");
             System.out.println("Welcome Back " + existingPatient.getName() + "!");
             System.out.println(existingPatient);
-            AuditLogger.log("WARNING", "Duplicate Patient Registration Attempt : " + mobileNumber);
+            AuditLogger.log(AuditLogger.WARNING, "Duplicate Patient Registration : " + mobileNumber);
             return;
         }
         String patientId = String.format("P%04d", patientIdCounter++);
@@ -107,7 +107,7 @@ public class FrontDeskMenu {
         String mobileNumber = ScannerHelper.readMobileNumber("Enter Patient Mobile Number : ");
         Patient patient = findPatientByMobileNumber(mobileNumber);
         if (patient == null) {
-            AuditLogger.log("ERROR", "Appointment Booking Failed. Patient Not Registered.");
+            AuditLogger.log(AuditLogger.ERROR, "Appointment Failed. Patient Not Registered.");
             return;
         }
         System.out.println("\nSelect Required Specialization");

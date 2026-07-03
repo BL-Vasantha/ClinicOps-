@@ -9,6 +9,7 @@ public class Doctor {
     private String name;
     private Specialization specialization;
     private int experience;
+
     private Shift shift;
     private List<String> bookedSlots = new ArrayList<>();
 

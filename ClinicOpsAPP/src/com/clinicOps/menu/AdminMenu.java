@@ -23,14 +23,17 @@ public class AdminMenu {
     }
 
     public static void showMenu() {
+
         boolean logout = false;
 
         while (!logout) {
+
             displayAdminOptions();
 
             int choice = ScannerHelper.readInteger("\nEnter your choice: ");
 
             switch (choice) {
+
                 case 1:
                     registerDoctors();
                     break;
@@ -59,6 +62,7 @@ public class AdminMenu {
     }
 
     private static void displayAdminOptions() {
+
         System.out.println("----- CLINIC ADMIN MENU -----");
         System.out.println("1. Doctor Data Entry");
         System.out.println("2. Bulk Data Entry");
@@ -82,7 +86,8 @@ public class AdminMenu {
                             "\nSelect Specialization",
                             Specialization.values());
 
-            int experience = ScannerHelper.readInteger("Experience : ");
+            int experience =
+                    ScannerHelper.readInteger("Experience : ");
 
             Shift shift =
                     ScannerHelper.readEnumChoice(
@@ -97,7 +102,7 @@ public class AdminMenu {
                     shift
             );
 
-            // ADD THE DOCTOR TO THE LIST
+            // IMPORTANT - ADD TO LIST
             doctorList.add(doctor);
 
             AuditLogger.log(
@@ -116,6 +121,8 @@ public class AdminMenu {
                     "Doctor Registered : " + doctor.getName()
             );
         }
+
+        System.out.println("\nDoctors Registered Successfully.");
     }
 
     private static void displayDoctors() {
@@ -135,10 +142,14 @@ public class AdminMenu {
 
     private static void bulkImportDoctors() {
 
-        String filePath = ScannerHelper.readString("Enter CSV File Path : ");
+        String filePath =
+                ScannerHelper.readString("Enter CSV File Path : ");
 
         List<Doctor> importedDoctors =
-                FileHandler.loadDoctors(filePath, doctorIdCounter, doctorList);
+                FileHandler.loadDoctors(
+                        filePath,
+                        doctorIdCounter,
+                        doctorList);
 
         doctorList.addAll(importedDoctors);
 
@@ -148,5 +159,7 @@ public class AdminMenu {
                 "INFO",
                 importedDoctors.size() + " Doctors Imported Successfully."
         );
+
+        System.out.println("\nDoctors Imported Successfully.");
     }
 }

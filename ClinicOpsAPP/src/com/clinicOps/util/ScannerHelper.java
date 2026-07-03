@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class ScannerHelper {
 
     private static final Scanner SCANNER = new Scanner(System.in);
+    private static int invalidMobileAttempts = 0;
 
     private static final String[] APPOINTMENT_SLOTS = {
             "09:00 AM",
@@ -72,9 +73,17 @@ public class ScannerHelper {
             System.out.print(prompt);
             String mobile = SCANNER.nextLine().trim();
             if (mobile.matches("^[6-9]\\d{9}$")) {
+                invalidMobileAttempts = 0;
                 return mobile;
             }
+            invalidMobileAttempts++;
             System.out.println("Invalid Indian Mobile Number.");
+            AuditLogger.log(AuditLogger.WARNING, "Invalid Mobile Number Entered : " + mobile);
+            if (invalidMobileAttempts >= 3) {
+                AuditLogger.log(AuditLogger.SECURITY, "Security Alert : "
+                        + invalidMobileAttempts + " Invalid Mobile Number Attempts.");
+                System.out.println("Security Warning : Multiple Invalid Attempts.");
+            }
         }
     }
 

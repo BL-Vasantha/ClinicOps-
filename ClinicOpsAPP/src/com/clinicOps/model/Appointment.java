@@ -10,6 +10,7 @@ public class Appointment {
         this.patient = patient;
         this.doctor = doctor;
         this.slot = slot;
+
     }
 
     public Patient getPatient() {

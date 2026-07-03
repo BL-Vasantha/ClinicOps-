@@ -7,8 +7,12 @@ import java.util.List;
 
 public class AuditLogger {
 
-    private static final List<String> auditLogs = new ArrayList<>();
+    public static final String INFO = "INFO";
+    public static final String WARNING = "WARNING";
+    public static final String ERROR = "ERROR";
+    public static final String SECURITY = "SECURITY";
 
+    private static final List<String> auditLogs = new ArrayList<>();
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
     private AuditLogger() {

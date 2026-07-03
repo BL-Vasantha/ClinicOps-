@@ -6,6 +6,7 @@ public class Patient {
     private String name;
     private String gender;
     private int age;
+
     private String mobileNumber;
 
     public Patient(String patientId,

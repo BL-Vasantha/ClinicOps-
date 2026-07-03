@@ -47,7 +47,9 @@ public class FileHandler {
                 }
             }
         } catch (IOException | CsvValidationException exception) {
-            System.out.println(exception.getMessage());
+            AuditLogger.log(AuditLogger.ERROR, "CSV Upload Failed : "
+                    + exception.getMessage());
+            System.out.println("Unable to Read File.");
         }
         return doctors;
     }
