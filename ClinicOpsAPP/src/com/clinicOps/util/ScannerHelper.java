@@ -1,8 +1,13 @@
 package com.clinicOps.util;
 
+
 import java.util.Scanner;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ScannerHelper {
+
+    private static final Logger logger = LogManager.getLogger(ScannerHelper.class);
 
     private static final Scanner SCANNER = new Scanner(System.in);
     private static int invalidMobileAttempts = 0;
@@ -47,7 +52,7 @@ public class ScannerHelper {
                 System.out.print(prompt);
                 return Integer.parseInt(SCANNER.nextLine());
             } catch (NumberFormatException exception) {
-                System.out.println("Invalid input. Please enter a valid number.");
+                logger.warn("Invalid input. Please enter a valid number.");
             }
         }
     }
@@ -78,11 +83,9 @@ public class ScannerHelper {
             }
             invalidMobileAttempts++;
             System.out.println("Invalid Indian Mobile Number.");
-            AuditLogger.log(AuditLogger.WARNING, "Invalid Mobile Number Entered : " + mobile);
+            logger.warn("Invalid Mobile Number : {}", mobile);
             if (invalidMobileAttempts >= 3) {
-                AuditLogger.log(AuditLogger.SECURITY, "Security Alert : "
-                        + invalidMobileAttempts + " Invalid Mobile Number Attempts.");
-                System.out.println("Security Warning : Multiple Invalid Attempts.");
+                logger.error("Security Alert : {} Invalid Attempts", invalidMobileAttempts);
             }
         }
     }
