@@ -1,6 +1,7 @@
 package com.clinicOps.model;
 
-public enum Shift {
+public enum Shift
+{
 
     MORNING,
 
