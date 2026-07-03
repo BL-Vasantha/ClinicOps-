@@ -4,6 +4,7 @@ import com.clinicOps.model.Appointment;
 import com.clinicOps.model.Doctor;
 import com.clinicOps.model.Patient;
 import com.clinicOps.model.Specialization;
+import com.clinicOps.util.AuditLogger;
 import com.clinicOps.util.ScannerHelper;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class FrontDeskMenu {
                     viewPatients();
                     break;
                 case 4:
-                    System.out.println("\nLogging out from Front Desk...");
+                    AuditLogger.log("INFO", "Front Desk Executive Logged Out.");
                     logout = true;
                     break;
                 default:
@@ -61,6 +62,7 @@ public class FrontDeskMenu {
             System.out.println("=================================");
             System.out.println("Welcome Back " + existingPatient.getName() + "!");
             System.out.println(existingPatient);
+            AuditLogger.log("WARNING", "Duplicate Patient Registration Attempt : " + mobileNumber);
             return;
         }
         String patientId = String.format("P%04d", patientIdCounter++);
@@ -69,7 +71,7 @@ public class FrontDeskMenu {
         int age = ScannerHelper.readInteger("Age : ");
         Patient patient = new Patient(patientId, name, gender, age, mobileNumber);
         patientList.add(patient);
-        System.out.println("\nPatient Registered Successfully.");
+        AuditLogger.log("INFO", "Patient Registered : " + patient.getName());
     }
 
     private static void viewPatients() {
@@ -102,7 +104,7 @@ public class FrontDeskMenu {
         String mobileNumber = ScannerHelper.readMobileNumber("Enter Patient Mobile Number : ");
         Patient patient = findPatientByMobileNumber(mobileNumber);
         if (patient == null) {
-            System.out.println("\nPatient Not Registered.");
+            AuditLogger.log("ERROR", "Appointment Booking Failed. Patient Not Registered.");
             return;
         }
         System.out.println("\nSelect Required Specialization");
@@ -127,13 +129,23 @@ public class FrontDeskMenu {
                         .findFirst()
                         .orElse(null);
         if (assignedDoctor == null) {
-            System.out.println("\nUnable to Book Appointment.");
+            AuditLogger.log(
+                    "WARNING",
+                    "No Doctor Available for "
+                            + specialization
+                            + " at "
+                            + slot);
             return;
         }
         assignedDoctor.bookSlot(slot);
         Appointment appointment = new Appointment(patient, assignedDoctor, slot);
         appointmentList.add(appointment);
-        System.out.println("\nAppointment Booked Successfully.");
+        AuditLogger.log("INFO", "Appointment Booked for "
+                + patient.getName()
+                + " with Dr. "
+                + assignedDoctor.getName()
+                + " at "
+                + slot);
         System.out.println(appointment);
     }
 }
