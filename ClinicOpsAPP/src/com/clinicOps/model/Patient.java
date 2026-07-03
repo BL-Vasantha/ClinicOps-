@@ -1,4 +1,4 @@
-package com.clinicops.model;
+package com.clinicOps.model;
 
 public class Patient {
 
