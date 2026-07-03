@@ -6,7 +6,7 @@ public enum Specialization {
     DERMATOLOGY,
     ORTHOPEDICS,
     PEDIATRICS,
+
     GENERAL_PHYSICIAN,
     NEUROLOGY
-
 }
