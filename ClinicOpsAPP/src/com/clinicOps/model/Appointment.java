@@ -2,17 +2,17 @@ package com.clinicOps.model;
 
 public class Appointment {
 
-    private com.clinicops.model.Patient patient;
+    private Patient patient;
     private Doctor doctor;
     private String slot;
 
-    public Appointment(com.clinicops.model.Patient patient, Doctor doctor, String slot) {
+    public Appointment(Patient patient, Doctor doctor, String slot) {
         this.patient = patient;
         this.doctor = doctor;
         this.slot = slot;
     }
 
-    public com.clinicops.model.Patient getPatient() {
+    public Patient getPatient() {
         return patient;
     }
 
