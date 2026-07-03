@@ -9,7 +9,6 @@ public class Patient {
     private String mobileNumber;
 
     public Patient(String patientId,
-                   
                    String name,
                    String gender,
                    int age,
