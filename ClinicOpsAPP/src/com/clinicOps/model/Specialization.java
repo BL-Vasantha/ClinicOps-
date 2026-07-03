@@ -8,4 +8,5 @@ public enum Specialization {
     PEDIATRICS,
     GENERAL_PHYSICIAN,
     NEUROLOGY
+
 }
