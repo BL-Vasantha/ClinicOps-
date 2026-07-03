@@ -14,7 +14,6 @@ import java.util.List;
 public class FileHandler {
 
     private FileHandler() {
-
     }
 
     public static List<Doctor> loadDoctors(String filePath, int startingId, List<Doctor> existingDoctors) {
