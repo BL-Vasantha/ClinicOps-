@@ -1,10 +1,10 @@
-# UC12: Logging Infrastructure (Audit Log)
+# UC13: Functional Logging (Traceability)
 
 ## Overview
 
-This use case introduces an **Audit Logging System** to record important activities performed within the ClinicOps application.
+This use case extends the Audit Logging system by introducing **Functional Logging**. Every successful business transaction automatically generates a log entry, providing complete traceability of important activities within the ClinicOps application.
 
-A centralized `AuditLogger` utility is implemented to store log entries with a timestamp and log level. Administrators can view these logs through the **View Audit Logs** option available in the Admin Menu.
+The system records successful operations such as **Doctor Registration** and **Appointment Booking**, allowing administrators to monitor when and what data was added to the system.
 
 ---
 
@@ -38,43 +38,51 @@ ClinicOps/
 
 # Objective
 
-Implement a centralized logging mechanism to keep track of important system activities and provide administrators with an audit trail.
+Implement event-driven functional logging so that every successful business operation is automatically recorded in the audit log.
 
 ---
 
 # Features Implemented
 
-* Created `AuditLogger` utility class.
-* Implemented `log(String message, String level)` method.
-* Stored audit logs using `List<String>`.
-* Generated timestamps using the Java Time API.
-* Added **View Audit Logs** option in the Admin Menu.
-* Logged doctor registration events.
-* Logged admin logout events.
+* Functional logging for doctor registration.
+* Functional logging for appointment booking.
+* Automatic log generation after successful business transactions.
+* Timestamped audit entries.
+* View all logs from the Admin Menu.
+* Improved traceability of application events.
 
 ---
 
-# Audit Log Format
+# Functional Logging
 
-Each log entry contains:
+Whenever a business transaction completes successfully, the system automatically records a log entry.
 
-* Date
-* Time
-* Log Level
-* Activity Description
-
-Example:
+### Doctor Registration
 
 
-[03-07-2026 12:03:28] [INFO] Doctor Registered : VASANTHA
+[03-07-2026 12:45:20] [INFO]
+Doctor Registered Successfully :
+D0001 - VASANTHA (DERMATOLOGY)
+```
+
+### Appointment Booking
+
+
+[03-07-2026 12:50:15] [INFO]
+Appointment Booked Successfully :
+Patient P0001 -> Doctor D0001
+Slot : 09:30 AM
 ```
 
 ---
 
-# Workflow
+# Event-Driven Workflow
 
 
-Admin Action
+Business Event
+      │
+      ▼
+Operation Completed Successfully
       │
       ▼
 AuditLogger.log(message, level)
@@ -83,46 +91,51 @@ AuditLogger.log(message, level)
 Generate Timestamp
       │
       ▼
-Store Log in List
+Store Log Entry
       │
       ▼
-View Audit Logs
+Display Through Admin Menu
 ```
 
 ---
 
-# Sample Output
+# Sample Audit Log
 
 
 ========== AUDIT LOGS ==========
 
-[03-07-2026 12:03:28] [INFO] Doctor Registered : VASANTHA
-[03-07-2026 12:03:38] [INFO] Doctor Registered : F
-[03-07-2026 12:03:47] [INFO] Doctor Registered : J
-[03-07-2026 12:03:57] [INFO] Admin Logged Out.
+[03-07-2026 12:45:20] [INFO] Doctor Registered Successfully : D0001 - VASANTHA (DERMATOLOGY)
+
+[03-07-2026 12:45:28] [INFO] Doctor Registered Successfully : D0002 - R (NEUROLOGY)
+
+[03-07-2026 12:45:35] [INFO] Doctor Registered Successfully : D0003 - F (PEDIATRICS)
+
+[03-07-2026 12:52:10] [INFO] Appointment Booked Successfully : Patient P0001 with Dr. VASANTHA at 09:30 AM
 ```
 
 ---
 
 # Concepts Learned
 
-* Object-Oriented Programming (OOP)
-* Utility Class Design
+* Event-Driven Programming
+* Functional Logging
+* Traceability
 * Java Collections (`List`)
-* Java Time API (`LocalDateTime`)
-* `DateTimeFormatter`
-* Logging Infrastructure
+* Java Time API (`LocalDateTime`, `DateTimeFormatter`)
 * Separation of Concerns
+* Utility Class Design
+* Business Event Tracking
 
 ---
 
 # Benefits
 
-* Maintains a history of important system events.
-* Makes debugging and monitoring easier.
+* Automatically records successful business transactions.
+* Improves traceability across the application.
+* Helps administrators monitor system activities.
+* Simplifies debugging and auditing.
 * Provides a centralized logging mechanism.
-* Improves application maintainability.
-* Can be extended to log patient registration, appointment booking, cancellations, and errors.
+* Easily extensible for future business events.
 
 ---
 
@@ -139,12 +152,12 @@ View Audit Logs
 
 # Future Enhancements
 
-* Add `WARNING` and `ERROR` log levels.
-* Save audit logs to a CSV file.
-* Search logs by date.
-* Filter logs by log level.
-* Export audit logs.
-* Maintain persistent audit history across application restarts.
+* Log patient registration events.
+* Log appointment cancellations and rescheduling.
+* Add WARNING and ERROR log levels.
+* Export audit logs to CSV.
+* Search and filter audit logs.
+* Store audit logs permanently in a database.
 
 Author
 Ragimekalapalli Vasantha

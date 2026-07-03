@@ -71,7 +71,10 @@ public class FrontDeskMenu {
         int age = ScannerHelper.readInteger("Age : ");
         Patient patient = new Patient(patientId, name, gender, age, mobileNumber);
         patientList.add(patient);
-        AuditLogger.log("INFO", "Patient Registered : " + patient.getName());
+        AuditLogger.log("INFO", "Patient Registered Successfully : "
+                + patient.getPatientId()
+                + " - "
+                + patient.getName());
     }
 
     private static void viewPatients() {
