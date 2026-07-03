@@ -8,6 +8,7 @@ import java.util.List;
 public class AuditLogger {
 
     private static final List<String> auditLogs = new ArrayList<>();
+
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
     private AuditLogger() {
