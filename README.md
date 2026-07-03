@@ -1,20 +1,14 @@
-# UC11: Shift Aware Appointment Booking
+# UC12: Logging Infrastructure (Audit Log)
 
 ## Overview
 
-This use case enhances the appointment booking process by ensuring that appointments are assigned only to doctors who are available during the selected appointment time.
+This use case introduces an **Audit Logging System** to record important activities performed within the ClinicOps application.
 
-The system validates appointments using three conditions:
-
-- Doctor Specialization
-- Doctor Shift Compatibility
-- Slot Availability
-
-This prevents invalid bookings, such as assigning a morning appointment to an evening-shift doctor.
+A centralized `AuditLogger` utility is implemented to store log entries with a timestamp and log level. Administrators can view these logs through the **View Audit Logs** option available in the Admin Menu.
 
 ---
 
-## Project Structure
+# Project Structure
 
 
 ClinicOps/
@@ -31,6 +25,7 @@ ClinicOps/
 │   └── FrontDeskMenu.java
 │
 ├── util/
+│   ├── AuditLogger.java
 │   ├── FileHandler.java
 │   └── ScannerHelper.java
 │
@@ -41,142 +36,115 @@ ClinicOps/
 
 ---
 
-## Features Implemented
+# Objective
 
-- Doctor Registration
-- Bulk Doctor Data Entry using CSV
-- Patient Registration
-- Shift Aware Appointment Booking
-- Doctor Shift Validation
-- Slot Availability Check
-- Display Doctors
-- Display Patients
+Implement a centralized logging mechanism to keep track of important system activities and provide administrators with an audit trail.
 
 ---
 
-## Shift Mapping
+# Features Implemented
 
-Each doctor is assigned one of the following shifts:
-
-- **MORNING**
-- **EVENING**
-- **BOTH**
-
-The selected appointment slot is validated against the doctor's assigned shift before confirming the appointment.
-
-| Shift | Available Slots |
-|--------|-----------------|
-| MORNING | 09:00 AM – 12:30 PM |
-| EVENING | 04:00 PM – 07:30 PM |
-| BOTH | All Available Slots |
+* Created `AuditLogger` utility class.
+* Implemented `log(String message, String level)` method.
+* Stored audit logs using `List<String>`.
+* Generated timestamps using the Java Time API.
+* Added **View Audit Logs** option in the Admin Menu.
+* Logged doctor registration events.
+* Logged admin logout events.
 
 ---
 
-## Appointment Booking Flow
+# Audit Log Format
+
+Each log entry contains:
+
+* Date
+* Time
+* Log Level
+* Activity Description
+
+Example:
 
 
-Patient
-   │
-   ▼
-Enter Mobile Number
-   │
-   ▼
-Choose Specialization
-   │
-   ▼
-Select Appointment Slot
-   │
-   ▼
-Filter Doctors
-   │
-   ├── Match Specialization
-   ├── Validate Shift
-   └── Check Slot Availability
-   │
-   ▼
-Book Appointment
-   │
-   ▼
-Display Appointment Details
+[03-07-2026 12:03:28] [INFO] Doctor Registered : VASANTHA
 ```
 
 ---
 
-## Stream Filtering Logic
-
-The doctor list is filtered using Java Stream API.
+# Workflow
 
 
-
-The filters are applied in the following order:
-
-1. Specialization Filter
-2. Shift Compatibility Filter
-3. Slot Availability Filter
-
-Only a doctor satisfying all three conditions is selected.
-
----
-
-## Concepts Learned
-
-- Object-Oriented Programming (OOP)
-- Encapsulation
-- Java Enums
-- Java Collections
-- Java Stream API
-- Predicate Chaining
-- Business Rule Validation
-- Shift Mapping
-- Method Extraction
-
----
-
-## Sample Output
-
-
-Appointment Booked Successfully.
-
-=========== Appointment ===========
-Patient ID      : P0001
-Patient Name    : GH
-Doctor ID       : D0001
-Doctor Name     : VASANTHA
-Appointment Slot: 09:30 AM
-===================================
+Admin Action
+      │
+      ▼
+AuditLogger.log(message, level)
+      │
+      ▼
+Generate Timestamp
+      │
+      ▼
+Store Log in List
+      │
+      ▼
+View Audit Logs
 ```
 
 ---
 
-## Benefits
+# Sample Output
 
-- Prevents invalid appointment bookings.
-- Ensures appointments are assigned only during doctor working hours.
-- Improves appointment scheduling accuracy.
-- Demonstrates practical use of Java Stream filtering.
-- Keeps business logic inside the Doctor model for better maintainability.
 
----
+========== AUDIT LOGS ==========
 
-## Technologies Used
-
-- Java 17
-- IntelliJ IDEA
-- Java Stream API
-- ArrayList
-- Enums
-- Object-Oriented Programming (OOP)
-- CSV File Handling
+[03-07-2026 12:03:28] [INFO] Doctor Registered : VASANTHA
+[03-07-2026 12:03:38] [INFO] Doctor Registered : F
+[03-07-2026 12:03:47] [INFO] Doctor Registered : J
+[03-07-2026 12:03:57] [INFO] Admin Logged Out.
+```
 
 ---
 
-## Future Enhancements
+# Concepts Learned
 
-- Audit Log Implementation
-- Appointment Cancellation
-- Appointment Rescheduling
-- Doctor-wise Appointment History
-- Daily Appointment Reports
-- Database Integration
+* Object-Oriented Programming (OOP)
+* Utility Class Design
+* Java Collections (`List`)
+* Java Time API (`LocalDateTime`)
+* `DateTimeFormatter`
+* Logging Infrastructure
+* Separation of Concerns
+
+---
+
+# Benefits
+
+* Maintains a history of important system events.
+* Makes debugging and monitoring easier.
+* Provides a centralized logging mechanism.
+* Improves application maintainability.
+* Can be extended to log patient registration, appointment booking, cancellations, and errors.
+
+---
+
+# Technologies Used
+
+* Java 17
+* IntelliJ IDEA
+* Java Collections
+* Java Time API
+* Object-Oriented Programming (OOP)
+* CSV File Handling
+
+---
+
+# Future Enhancements
+
+* Add `WARNING` and `ERROR` log levels.
+* Save audit logs to a CSV file.
+* Search logs by date.
+* Filter logs by log level.
+* Export audit logs.
+* Maintain persistent audit history across application restarts.
+
 Author
 Ragimekalapalli Vasantha
