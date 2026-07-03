@@ -3,16 +3,19 @@ package com.clinicOps.menu;
 import com.clinicOps.model.Doctor;
 import com.clinicOps.model.Shift;
 import com.clinicOps.model.Specialization;
-import com.clinicOps.util.AuditLogger;
 import com.clinicOps.util.FileHandler;
 import com.clinicOps.util.ScannerHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AdminMenu {
 
-    private static final ArrayList<Doctor> doctorList = new ArrayList<>();
+    private static final Logger logger = LogManager.getLogger(AdminMenu.class);
+
+    private static final List<Doctor> doctorList = new ArrayList<>();
     private static int doctorIdCounter = 1;
 
     private AdminMenu() {
@@ -43,20 +46,16 @@ public class AdminMenu {
                     break;
 
                 case 3:
-                    AuditLogger.displayLogs();
-                    break;
-
-                case 4:
                     displayDoctors();
                     break;
 
-                case 5:
-                    AuditLogger.log("INFO", "Admin Logged Out.");
+                case 4:
+                    logger.info("Admin Logged Out");
                     logout = true;
                     break;
 
                 default:
-                    System.out.println("\nInvalid option. Please enter between 1 and 5.");
+                    System.out.println("\nInvalid option. Please enter between 1 and 4.");
             }
         }
     }
@@ -66,9 +65,8 @@ public class AdminMenu {
         System.out.println("----- CLINIC ADMIN MENU -----");
         System.out.println("1. Doctor Data Entry");
         System.out.println("2. Bulk Data Entry");
-        System.out.println("3. View Audit Logs");
-        System.out.println("4. Display Doctors");
-        System.out.println("5. Logout");
+        System.out.println("3. Display Doctors");
+        System.out.println("4. Logout");
     }
 
     private static void registerDoctors() {
@@ -102,24 +100,10 @@ public class AdminMenu {
                     shift
             );
 
-            // IMPORTANT - ADD TO LIST
+            // Add doctor to list
             doctorList.add(doctor);
 
-            AuditLogger.log(
-                    "INFO",
-                    "Doctor Registered Successfully : "
-                            + doctor.getId()
-                            + " - "
-                            + doctor.getName()
-                            + " ("
-                            + doctor.getSpecialization()
-                            + ")"
-            );
-
-            AuditLogger.log(
-                    "INFO",
-                    "Doctor Registered : " + doctor.getName()
-            );
+            logger.info("Doctor Registered Successfully : {}", doctor.getName());
         }
 
         System.out.println("\nDoctors Registered Successfully.");
@@ -155,10 +139,7 @@ public class AdminMenu {
 
         doctorIdCounter += importedDoctors.size();
 
-        AuditLogger.log(
-                "INFO",
-                importedDoctors.size() + " Doctors Imported Successfully."
-        );
+        logger.info("{} Doctors Imported Successfully", importedDoctors.size());
 
         System.out.println("\nDoctors Imported Successfully.");
     }

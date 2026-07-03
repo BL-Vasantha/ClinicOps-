@@ -1,12 +1,12 @@
 package com.clinicOps.model;
 
-public class Patient {
+public class Patient
+{
 
     private String patientId;
     private String name;
     private String gender;
     private int age;
-
     private String mobileNumber;
 
     public Patient(String patientId,

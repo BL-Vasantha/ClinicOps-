@@ -1,154 +1,96 @@
 package com.clinicOps.menu;
 
-import com.clinicOps.model.Appointment;
-import com.clinicOps.model.Doctor;
-import com.clinicOps.model.Patient;
-import com.clinicOps.model.Specialization;
-import com.clinicOps.util.AuditLogger;
+import com.clinicOps.model.*;
 import com.clinicOps.util.ScannerHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FrontDeskMenu {
 
-    private static final ArrayList<Patient> patientList = new ArrayList<>();
-    private static int patientIdCounter = 1;
-    private static final List<Appointment> appointmentList = new ArrayList<>();
+    private static final Logger logger =
+            LogManager.getLogger(FrontDeskMenu.class);
 
-    private FrontDeskMenu() {
-    }
+    private static final List<Patient> patientList = new ArrayList<>();
+    private static final List<Appointment> appointmentList = new ArrayList<>();
+    private static int patientIdCounter = 1;
 
     public static void showMenu() {
-        boolean logout = false;
-        while (!logout) {
-            displayFrontDeskMenu();
-            int choice = ScannerHelper.readInteger("\nEnter your choice : ");
+        while (true) {
+            System.out.println("1.Register 2.Book 3.Exit");
+            int choice = ScannerHelper.readInteger("Enter choice: ");
+
             switch (choice) {
-                case 1:
-                    registerPatient();
-                    break;
-                case 2:
-                    bookAppointment();
-                    break;
-                case 3:
-                    viewPatients();
-                    break;
-                case 4:
-                    AuditLogger.log("INFO", "Front Desk Executive Logged Out.");
-                    logout = true;
-                    break;
-                default:
-                    System.out.println("\nInvalid option. Please enter between 1 and 4.");
+                case 1 -> registerPatient();
+                case 2 -> bookAppointment();
+                case 3 -> {
+                    logger.info("Front Desk Logout");
+                    return;
+                }
             }
         }
-    }
-
-    private static void displayFrontDeskMenu() {
-        System.out.println("----- FRONT DESK EXECUTIVE MENU -----");
-        System.out.println("1. Patient Registration");
-        System.out.println("2. Book Appointment");
-        System.out.println("3. View Patients");
-        System.out.println("4. Logout");
     }
 
     private static void registerPatient() {
-        System.out.println("\nRegister Patient");
-        String mobileNumber = ScannerHelper.readMobileNumber("Mobile Number : ");
-        Patient existingPatient = findPatientByMobileNumber(mobileNumber);
-        if (existingPatient != null) {
-            System.out.println("\n=================================");
-            System.out.println("Patient Already Registered");
-            System.out.println("=================================");
-            System.out.println("Welcome Back " + existingPatient.getName() + "!");
-            System.out.println(existingPatient);
-            AuditLogger.log(AuditLogger.WARNING, "Duplicate Patient Registration : " + mobileNumber);
-            return;
-        }
-        String patientId = String.format("P%04d", patientIdCounter++);
-        String name = ScannerHelper.readString("Patient Name : ");
-        String gender = ScannerHelper.readString("Gender : ");
-        int age = ScannerHelper.readInteger("Age : ");
-        Patient patient = new Patient(patientId, name, gender, age, mobileNumber);
-        patientList.add(patient);
-        AuditLogger.log("INFO", "Patient Registered Successfully : "
-                + patient.getPatientId()
-                + " - "
-                + patient.getName());
-    }
+        String mobile = ScannerHelper.readMobileNumber("Mobile: ");
 
-    private static void viewPatients() {
-        if (patientList.isEmpty()) {
-            System.out.println("\nNo Patients Registered.");
-            return;
-        }
-        System.out.println("\n========== Patient List ==========");
-        for (Patient patient : patientList) {
-            System.out.println(patient);
-            System.out.println("----------------------------------");
-        }
-    }
-
-    private static Patient findPatientByMobileNumber(String mobileNumber) {
-        for (Patient patient : patientList) {
-            if (patient.getMobileNumber().equals(mobileNumber)) {
-                return patient;
+        for (Patient p : patientList) {
+            if (p.getMobileNumber().equals(mobile)) {
+                logger.warn("Duplicate Patient: {}", mobile);
+                System.out.println("Already Registered");
+                return;
             }
         }
-        return null;
+
+        Patient p = new Patient(
+                "P" + patientIdCounter++,
+                ScannerHelper.readString("Name: "),
+                ScannerHelper.readString("Gender: "),
+                ScannerHelper.readInteger("Age: "),
+                mobile
+        );
+
+        patientList.add(p);
+        logger.info("Patient Registered: {}", p.getName());
     }
 
     private static void bookAppointment() {
         List<Doctor> doctors = AdminMenu.getDoctorList();
-        if (doctors.isEmpty()) {
-            System.out.println("\nNo Doctors Registered.");
-            return;
-        }
-        String mobileNumber = ScannerHelper.readMobileNumber("Enter Patient Mobile Number : ");
-        Patient patient = findPatientByMobileNumber(mobileNumber);
+
+        String mobile = ScannerHelper.readMobileNumber("Mobile: ");
+        Patient patient = patientList.stream()
+                .filter(p -> p.getMobileNumber().equals(mobile))
+                .findFirst().orElse(null);
+
         if (patient == null) {
-            AuditLogger.log(AuditLogger.ERROR, "Appointment Failed. Patient Not Registered.");
+            logger.error("Patient not found");
             return;
         }
-        System.out.println("\nSelect Required Specialization");
-        Specialization specialization = ScannerHelper.readEnumChoice("Choose Specialization", Specialization.values());
+
+        Specialization spec = ScannerHelper.readEnumChoice("Spec", Specialization.values());
         String slot = ScannerHelper.readAppointmentSlot();
-        boolean doctorAvailable = doctors.stream().anyMatch(doctor ->
-                doctor.getSpecialization() == specialization
-                        && doctor.isShiftCompatible(slot)
-                        && doctor.isSlotAvailable(slot));
-        if (!doctorAvailable) {
-            System.out.println("\nNo Doctor Available for " + specialization + " at " + slot);
+
+        Doctor doctor = doctors.stream()
+                .filter(d -> d.getSpecialization() == spec)
+                .filter(d -> d.isShiftCompatible(slot))
+                .filter(d -> d.isSlotAvailable(slot))
+                .findFirst().orElse(null);
+
+        if (doctor == null) {
+            logger.warn("No doctor available");
             return;
         }
-        Doctor assignedDoctor =
-                doctors.stream()
-                        .filter(doctor ->
-                                doctor.getSpecialization() == specialization)
-                        .filter(doctor ->
-                                doctor.isShiftCompatible(slot))
-                        .filter(doctor ->
-                                doctor.isSlotAvailable(slot))
-                        .findFirst()
-                        .orElse(null);
-        if (assignedDoctor == null) {
-            AuditLogger.log(
-                    "WARNING",
-                    "No Doctor Available for "
-                            + specialization
-                            + " at "
-                            + slot);
-            return;
-        }
-        assignedDoctor.bookSlot(slot);
-        Appointment appointment = new Appointment(patient, assignedDoctor, slot);
-        appointmentList.add(appointment);
-        AuditLogger.log("INFO", "Appointment Booked for "
-                + patient.getName()
-                + " with Dr. "
-                + assignedDoctor.getName()
-                + " at "
-                + slot);
-        System.out.println(appointment);
+
+        doctor.bookSlot(slot);
+        Appointment appt = new Appointment(patient, doctor, slot);
+        appointmentList.add(appt);
+
+        logger.info("Appointment Booked: {} with {} at {}",
+                patient.getName(), doctor.getName(), slot);
+
+        System.out.println(appt);
     }
 }

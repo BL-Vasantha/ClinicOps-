@@ -3,13 +3,13 @@ package com.clinicOps.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Doctor {
+public class Doctor
+{
 
     private String id;
     private String name;
     private Specialization specialization;
     private int experience;
-
     private Shift shift;
     private List<String> bookedSlots = new ArrayList<>();
 

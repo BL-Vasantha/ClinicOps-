@@ -1,8 +1,19 @@
-# ClinicOps – UC14: Error & Security Logging
+# Use Case 15: Log4j Migration
 
-## Overview
+## Goal
 
-UC14 introduces **Error & Security Logging** to improve application reliability and traceability. The system records successful operations, invalid inputs, and exceptions using different log levels.
+Migrate the application's logging mechanism to **Apache Log4j 2** for a scalable and production-ready logging solution.
+
+## Actor
+
+* Admin
+
+## Flow
+
+* Replace the existing logging mechanism with Log4j 2.
+* Configure log levels using `log4j2.xml`.
+* Log application events in the console.
+* Record important operations across the application.
 
 ## Project Structure
 
@@ -21,35 +32,44 @@ ClinicOps/
 │   └── FrontDeskMenu.java
 │
 ├── util/
-│   ├── AuditLogger.java
 │   ├── FileHandler.java
 │   └── ScannerHelper.java
 │
 ├── doctors.csv
-│
+├── log4j2.xml
 └── ClinicApp.java
 ```
 
-## Features
+## Key Changes
 
-* Bulk doctor import from CSV.
-* Manual doctor registration.
-* Patient registration.
-* Shift-aware appointment booking.
-* INFO, WARNING, and ERROR audit logs.
-* Invalid CSV record detection.
-* Duplicate doctor validation.
-* Exception handling for CSV upload failures.
+* Replaced the previous logging mechanism with **Log4j 2**.
+* Added Log4j dependencies to the project.
+* Configured logging using `log4j2.xml`.
+* Implemented logging in:
+
+    * Admin Menu
+    * Front Desk Menu
+    * File Handling
+
+## Log Levels
+
+* **INFO** – Successful operations.
+* **WARN** – Invalid inputs or unexpected conditions.
+* **ERROR** – Exceptions and application failures.
 
 ## Concepts Learned
 
+* Log4j 2
+* Dependency Management
+* Refactoring
+* Logging Configuration
 * Exception Handling
-* Defensive Programming
-* Security Logging
-* Java Collections
-* Java Time API
-* File Handling
-* OpenCSV
+
+## Outcome
+
+* Production-ready logging framework.
+* Centralized logging configuration.
+* Improved debugging and application monitoring.
 
 Author
 Ragimekalapalli Vasantha

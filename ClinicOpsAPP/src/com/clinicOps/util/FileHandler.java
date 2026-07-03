@@ -4,53 +4,93 @@ import com.clinicOps.model.Doctor;
 import com.clinicOps.model.Shift;
 import com.clinicOps.model.Specialization;
 import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileHandler {
 
+    private static final Logger logger =
+            LogManager.getLogger(FileHandler.class);
+
     private FileHandler() {
     }
 
-    public static List<Doctor> loadDoctors(String filePath, int startingId, List<Doctor> existingDoctors) {
+    public static List<Doctor> loadDoctors(String path,
+                                           int startingId,
+                                           List<Doctor> existingDoctors) {
+
         List<Doctor> doctors = new ArrayList<>();
-        try (CSVReader reader = new CSVReader(new FileReader(filePath))) {
-            String[] record;
-            int idCounter = startingId;
-            while ((record = reader.readNext()) != null) {
-                if (record.length != 4) {
-                    System.out.println("Skipping Invalid Record");
+
+        try (CSVReader reader = new CSVReader(new FileReader(path))) {
+
+            String[] row;
+            int doctorIdCounter = startingId;
+
+            // Skip CSV Header
+            reader.readNext();
+
+            while ((row = reader.readNext()) != null) {
+
+                // Skip blank or invalid rows
+                if (row.length < 4) {
+                    logger.warn("Skipping Invalid Record");
                     continue;
                 }
+
                 try {
-                    String name = record[0].trim();
-                    Specialization specialization = Specialization.valueOf(record[1].trim().toUpperCase());
-                    int experience = Integer.parseInt(record[2].trim());
-                    Shift shift = Shift.valueOf(record[3].trim().toUpperCase());
+
+                    String name = row[0].trim();
+
+                    Specialization specialization =
+                            Specialization.valueOf(row[1].trim().toUpperCase());
+
+                    int experience =
+                            Integer.parseInt(row[2].trim());
+
+                    Shift shift =
+                            Shift.valueOf(row[3].trim().toUpperCase());
+
                     // Duplicate Check
-                    boolean duplicate = existingDoctors.stream().anyMatch(doctor ->
-                            doctor.getName().equalsIgnoreCase(name)
-                                    && doctor.getSpecialization() == specialization
-                                    && doctor.getExperience() == experience);
+                    boolean duplicate = existingDoctors.stream().anyMatch(
+                            doctor ->
+                                    doctor.getName().equalsIgnoreCase(name)
+                                            && doctor.getSpecialization() == specialization
+                                            && doctor.getExperience() == experience
+                    );
+
                     if (duplicate) {
-                        System.out.println("Duplicate Doctor Skipped : " + name);
+                        logger.warn("Duplicate Doctor Skipped : {}", name);
                         continue;
                     }
-                    String doctorId = String.format("D%04d", idCounter++);
-                    doctors.add(new Doctor(doctorId, name, specialization, experience, shift));
-                } catch (IllegalArgumentException exception) {
-                    System.out.println("Invalid Specialization/Shift : " + String.join(",", record));
+
+                    String doctorId =
+                            String.format("D%04d", doctorIdCounter++);
+
+                    Doctor doctor = new Doctor(
+                            doctorId,
+                            name,
+                            specialization,
+                            experience,
+                            shift
+                    );
+
+                    doctors.add(doctor);
+
+                } catch (IllegalArgumentException e) {
+                    logger.warn("Invalid Record : {}", String.join(",", row));
                 }
             }
-        } catch (IOException | CsvValidationException exception) {
-            AuditLogger.log(AuditLogger.ERROR, "CSV Upload Failed : "
-                    + exception.getMessage());
-            System.out.println("Unable to Read File.");
+
+            logger.info("{} Doctors Imported Successfully", doctors.size());
+
+        } catch (Exception e) {
+            logger.error("CSV Read Failed", e);
         }
+
         return doctors;
     }
 }
